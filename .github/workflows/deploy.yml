@@ -12,6 +12,10 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
+    - name: Create SSH directory
+      run: |
+        mkdir -p ~/.ssh
+        chmod 700 ~/.ssh  # Убедиться, что права доступа корректные
     - name: Fix SSH permissions
       run: |
         echo "${{ secrets.VM_SSH_KEY }}" > ~/.ssh/id_rsa
