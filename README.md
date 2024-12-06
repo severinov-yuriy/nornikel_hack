@@ -49,7 +49,7 @@
     |   ├── tsconfig.json
     |   ├── Dockerfile
     |   └── README.md               # Документация
-    ├── app/                    # Бэк
+    ├── server/                 # Бэк
     │   ├── app/
     |   │   │   ├── main.py              # Запуск API
     |   │   │   ├── config.py            # Конфигурация API
