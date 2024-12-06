@@ -16,4 +16,14 @@ async def handle_query(request: QueryRequest):
     """
     Эндпоинт для обработки запросов пользователя с использованием RAG.
     """
-    return f'{request=} received'
+    response = {
+        "query": request.query,
+        "answer": "This is just a chill answer",
+        "context_files": [
+            "file 1",
+            "file 2",
+            "file 42",
+            "file 34"
+            ]
+        }
+    return response
