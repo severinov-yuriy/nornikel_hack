@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import type { answerApi } from '@/entities/answer'
+import type { AnswerResponse } from 'shared-types'
 
 const { content } = defineProps<{
-    content: answerApi.AnswerResponse
+    content: AnswerResponse
 }>()
 
-const paragraphs = computed(() => content.answer.split(/\n/))
+const paragraphs = computed(() => content.answer.split(/\n/).filter((str) => str.length))
 </script>
 <template>
     <section class="flex w-full flex-col gap-6 py-6">
