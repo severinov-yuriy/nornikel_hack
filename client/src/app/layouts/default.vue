@@ -3,9 +3,11 @@ import { VHeader } from '@/widgets/header'
 </script>
 
 <template>
-    <div class="flex min-h-[100vh] flex-col bg-slate-100 dark:bg-slate-900">
-        <VHeader />
-        <div class="flex flex-col px-4 py-6">
+    <div class="relative flex min-h-full flex-col items-center bg-white dark:bg-slate-700">
+        <div class="sticky top-0 z-50 w-full bg-inherit">
+            <VHeader />
+        </div>
+        <div class="flex w-full max-w-screen-lg flex-col py-6">
             <slot />
         </div>
     </div>

@@ -1,9 +1,11 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { SearchDocs } from '@/features/search'
+</script>
 
 <template>
-    <div>
-        <h1 class="text-2xl text-gray-400">Home page</h1>
-    </div>
+    <UContainer class="w-full py-4">
+        <SearchDocs />
+    </UContainer>
 </template>
 
 <style scoped></style>

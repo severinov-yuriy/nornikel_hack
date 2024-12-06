@@ -5,3 +5,9 @@
 * {
     box-sizing: border-box;
 }
+
+html,
+body,
+[data-v-app] {
+    height: 100%;
+}

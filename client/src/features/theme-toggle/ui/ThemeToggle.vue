@@ -14,8 +14,8 @@ const isDark = computed({
     <UToggle
         size="lg"
         v-model="isDark"
-        on-icon="i-heroicons-sun"
-        off-icon="i-heroicons-moon"
+        off-icon="i-heroicons-sun"
+        on-icon="i-heroicons-moon"
     />
 </template>
 
