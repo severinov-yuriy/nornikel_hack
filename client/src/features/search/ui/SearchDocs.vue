@@ -34,7 +34,8 @@ const { searchTerm, currentAnswer, isFetching, getData, error, setError } = useM
             v-if="error"
             :title="error.title"
             :description="error.message"
-            color="red"
+            color="rose"
+            variant="subtle"
             :close-button="{
                 icon: 'i-heroicons-x-mark-20-solid',
                 color: 'white',
