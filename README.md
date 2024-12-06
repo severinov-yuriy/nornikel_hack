@@ -61,5 +61,6 @@
     |   ├── requirements.txt        # Зависимости
     |   ├── Dockerfile
     |   └── README.md               # Документация
+    ├── docker-compose.yml
     └── README.md               # Документация
 
