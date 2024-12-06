@@ -1,9 +1,9 @@
 import { AnswerResponse } from '~/shared-types'
 
 export default defineEventHandler(async (event) => {
-    const { q } = getQuery(event)
+    const body = await readBody(event)
 
-    if (!q) {
+    if (!body.query) {
         return createError({
             statusCode: 400,
             statusMessage: 'Invalid query',
@@ -11,13 +11,9 @@ export default defineEventHandler(async (event) => {
     }
 
     try {
-        const response = await $fetch<AnswerResponse>(`${process.env.API_URL}/api`, {
-            query: {
-                query: q,
-            },
-            onRequest({ request }) {
-                console.log(request)
-            },
+        const response = await $fetch<AnswerResponse>(`${process.env.API_URL}/query/`, {
+            method: 'post',
+            body: JSON.stringify(body),
         })
 
         return response
