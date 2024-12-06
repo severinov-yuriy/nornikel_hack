@@ -10,8 +10,8 @@ app = FastAPI(
     )
 
 # Регистрация маршрутов
-app.include_router(upload.router, prefix="/api", tags=["Upload"])
-app.include_router(query.router, prefix="/api", tags=["Query"])
+app.include_router(upload.router, tags=["Upload"])
+app.include_router(query.router, tags=["Query"])
 
 app.add_middleware(
     CORSMiddleware,
@@ -22,6 +22,6 @@ app.add_middleware(
 )
 
 # Точка входа для проверки статуса
-@app.get("/api/")
+@app.get("/")
 async def root():
     return {"message": "RAG Service is running"}
