@@ -1,7 +1,6 @@
 # nornikel_hack
 
     nornikel_hack/
-    
     ├── .github/
     │   └── workflows/
     │       └── deploy.yml
