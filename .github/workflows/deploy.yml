@@ -12,7 +12,15 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
-
+    - name: Fix SSH permissions
+      run: |
+        echo "${{ secrets.VM_SSH_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+    - name: Configure SSH
+      run: |
+        echo -e "Host your-vm-ip\n\tStrictHostKeyChecking no\n\tIdentityFile ~/.ssh/id_rsa" >> ~/.ssh/config
+    - name: Debug SSH connection
+      run: ssh -vvv -i ~/.ssh/id_rsa user@your-vm-ip
     - name: Deploy to VM
       uses: appleboy/ssh-action@v0.1.10
       with:
