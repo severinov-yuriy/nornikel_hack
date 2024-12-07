@@ -1,5 +1,7 @@
 export default defineEventHandler(async (event) => {
     const body = await readBody(event)
+
+    console.log(body)
   
     try {
         const response = await $fetch(`${process.env.API_URL}/upload/`, {

@@ -10,7 +10,7 @@ const isOpen = ref(false)
         @click="isOpen = true"
     />
     <UModal v-model="isOpen">
-        <UContainer class="flex min-h-[300px] min-w-[500px] flex-col justify-center p-6">
+        <UContainer class="flex min-h-[300px] min-w-[500px] flex-col p-6">
             <Form />
         </UContainer>
     </UModal>
