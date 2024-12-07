@@ -9,9 +9,6 @@ export default defineEventHandler(async (event) => {
         const response = await $fetch(`${process.env.API_URL}/files/${body.id}`, {
             method: 'delete',
             body,
-            onRequest({request}) {
-                console.log(request)
-            }
         })
 
         return response
