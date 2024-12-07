@@ -27,7 +27,7 @@ export function useModel() {
     async function onSubmit() {
         const formData = new FormData()
 
-        filesData.value.forEach((file) => formData.append(`files[]`, file, file.name))
+        filesData.value.forEach((file) => formData.append(`files`, file, file.name))
 
         toggleUploading()
 
