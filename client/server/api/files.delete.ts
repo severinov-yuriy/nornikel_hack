@@ -1,15 +1,15 @@
+import files from './files.json'
+
 export default defineEventHandler(async (event) => {
     const body = await readBody(event)
 
-    console.log(body)
-
+    if (process.dev) {
+        return body
+    }
     try {
-        const response = await $fetch(`${process.env.API_URL}/upload/`, {
-            method: 'post',
+        const response = await $fetch(`${process.env.API_URL}/files`, {
+            method: 'delete',
             body,
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
         })
 
         return response

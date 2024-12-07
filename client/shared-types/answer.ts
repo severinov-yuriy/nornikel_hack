@@ -18,5 +18,5 @@ export type BaseResponse<T> =
     | ErrorResponse
     | {
           status: 'ok'
-          payload: T
+          payload: T | undefined
       }
