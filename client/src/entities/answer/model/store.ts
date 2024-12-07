@@ -1,57 +1,18 @@
 import { defineStore } from 'pinia'
-import type { Answer, FileMeta } from 'shared-types'
+import type { Answer } from 'shared-types'
 import { useToggle } from '@vueuse/core'
-import { getAllFiles, getAnswer } from '../api'
+import { getAnswer } from '../api'
 
 export const answerStore = defineStore('answer', () => {
-    const allFiles = ref<FileMeta[] | null>([
-        {
-            id: 1,
-            name: 'Text',
-            ext: 'txt',
-        },
-        {
-            id: 2,
-            name: 'Png',
-            ext: 'png',
-        },
-        {
-            id: 3,
-            name: 'Pdf',
-            ext: 'pdf',
-        },
-        {
-            id: 4,
-            name: 'Jpeg',
-            ext: 'jpeg',
-        },
-        {
-            id: 5,
-            name: 'docx',
-            ext: 'docx',
-        },
-    ])
-
     const currentAnswer = ref<Answer>()
 
-    const [filesFetching, toggleFilesFetching] = useToggle()
-
-    async function getFiles() {
-        toggleFilesFetching()
-
-        const response = await getAllFiles()
-
-        toggleFilesFetching()
-
-        if (response.status === 'error') {
-            return
-        }
-
-        allFiles.value = response.payload.files
-    }
+    const [answerFetching, toggleAnswerFetching] = useToggle()
 
     async function askQuestion(query: string) {
+        toggleAnswerFetching()
         const response = await getAnswer(query)
+
+        toggleAnswerFetching()
 
         if (response.status === 'ok') {
             currentAnswer.value = response.payload
@@ -61,9 +22,7 @@ export const answerStore = defineStore('answer', () => {
     }
 
     return {
-        allFiles,
-        filesFetching,
-        getFiles,
+        answerFetching,
         currentAnswer,
         askQuestion,
     }

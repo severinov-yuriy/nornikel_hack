@@ -1,12 +1,10 @@
-import { answerApi, answerModel } from '@/entities/answer'
-import { useToggle } from '@vueuse/core'
-import type { AnswerResponse } from 'shared-types'
+import { answerModel } from '@/entities/answer'
 
 export function useModel() {
     const answerStore = answerModel.answerStore()
+    const { answerFetching, currentAnswer } = storeToRefs(answerStore)
     const searchTerm = ref('')
     const error = ref<{ title: string; message: string } | null>(null)
-    const [isFetching, toggleFetching] = useToggle()
 
     function setError(payload: { title: string; message: string } | null) {
         if (!payload) {
@@ -20,11 +18,7 @@ export function useModel() {
     }
 
     async function getData() {
-        toggleFetching()
-
         const status = await answerStore.askQuestion(searchTerm.value)
-
-        toggleFetching()
 
         if (status !== 'ok') {
             return setError({
@@ -38,9 +32,10 @@ export function useModel() {
     }
 
     return {
+        currentAnswer,
         searchTerm,
         getData,
-        isFetching,
+        answerFetching,
         error,
         setError,
     }

@@ -1,12 +1,8 @@
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
 import { useModel } from '../model'
 import AnswerContent from './AnswerContent.vue'
-import { answerModel } from '@/entities/answer'
 
-const { currentAnswer } = storeToRefs(answerModel.answerStore())
-
-const { searchTerm, isFetching, getData, error, setError } = useModel()
+const { searchTerm, answerFetching, currentAnswer, getData, error, setError } = useModel()
 </script>
 <template>
     <div class="flex w-full flex-col gap-6">
@@ -19,7 +15,7 @@ const { searchTerm, isFetching, getData, error, setError } = useModel()
                 icon="i-heroicons-magnifying-glass-20-solid"
                 size="xl"
                 placeholder="Ввод..."
-                :loading="isFetching"
+                :loading="answerFetching"
                 class="flex-1"
             />
             <UButton
@@ -27,7 +23,7 @@ const { searchTerm, isFetching, getData, error, setError } = useModel()
                 type="submit"
                 size="xl"
                 class="min-w-24 text-center"
-                :loading="isFetching"
+                :loading="answerFetching"
             />
         </form>
 

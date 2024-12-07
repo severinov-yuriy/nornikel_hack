@@ -9,6 +9,7 @@ const { file } = defineProps<{
 
 const icons = {
     docx: DocIcon,
+    doc: DocIcon,
     jpeg: ImageIcon,
     pdf: PdfIcon,
     png: ImageIcon,
@@ -19,7 +20,7 @@ const icons = {
 <template>
     <li class="flex items-center gap-3 border-b">
         <UPopover
-            class="w-full hover:text-blue-400"
+            class="h-full w-full transition-colors duration-150 ease-in hover:text-blue-400"
             :popper="{ placement: 'bottom' }"
             mode="hover"
         >

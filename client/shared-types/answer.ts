@@ -1,20 +1,11 @@
-export type AnswerResponse = BaseResponse<Answer>
+import type { FileMeta } from './files'
 
-export type GetFilesResponse = BaseResponse<{
-    total: number
-    files: FileMeta[]
-}>
+export type AnswerResponse = BaseResponse<Answer>
 
 export type Answer = {
     query: string
     response: string
     files: FileMeta[]
-}
-
-export type FileMeta = {
-    id: number
-    name: string
-    ext: 'txt' | 'docx' | 'pdf' | 'jpeg' | 'png'
 }
 
 export type ErrorResponse = {

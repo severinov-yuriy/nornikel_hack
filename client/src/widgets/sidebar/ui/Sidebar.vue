@@ -1,14 +1,10 @@
 <script setup lang="ts">
-import { answerModel } from '@/entities/answer'
-import { FileList } from '@/features/files'
-const { allFiles } = storeToRefs(answerModel.answerStore())
+import { FileList, UploadFiles } from '@/features/files'
 </script>
 <template>
-    <div class="w-full">
-        <FileList
-            :files="allFiles"
-            v-if="allFiles"
-        />
+    <div class="flex w-full flex-col items-start gap-4">
+        <UploadFiles />
+        <FileList />
     </div>
 </template>
 
