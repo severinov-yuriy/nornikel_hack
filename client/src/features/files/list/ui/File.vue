@@ -47,10 +47,9 @@ const icons = {
                     />
                     <UButton
                         label="Удалить"
-                        size="xs"
+                        size="sm"
                         variant="link"
                         color="red"
-                        icon="i-heroicons-trash"
                         @click="deleteFile(file.id)"
                         :loading="isDeleting"
                     />
