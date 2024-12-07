@@ -10,7 +10,7 @@ from src.text import (
 
 # from src.audio import process_audio
 # from src.image import process_image
-from src.database import save_text, save_ch unk
+from src.database import save_text, save_chunk
 from src.weaviate_database import get_weaviate_client
 
 EXTRACTORS = {

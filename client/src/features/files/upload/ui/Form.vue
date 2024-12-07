@@ -49,48 +49,42 @@ const { isOverDropZone } = useDropZone(dropZoneRef, {
             class="flex h-full w-full flex-1 flex-col justify-between gap-4"
             v-else
         >
-            <ul class="flex w-full flex-col gap-2">
+            <ul class="flex w-full flex-col gap-2 max-h-[350px] overflow-auto">
                 <li
                     v-for="file in filesData"
                     class="border-b py-2 text-xs"
                 >
                     <div class="flex items-center justify-between">
-                        <strong>Имя файла:</strong>
-                        <span class="text-right">{{ file.name }}</span>
+                        <strong class="flex-1">Имя файла:</strong>
+                        <span class="flex-1 text-right">{{ file.name }}</span>
                     </div>
                     <div class="flex items-center justify-between">
-                        <strong>Тип: </strong>
-                        <span class="text-right"> {{ file.type }}</span>
+                        <strong class="flex-1">Тип: </strong>
+                        <span class="flex-1 text-right"> {{ file.type }}</span>
                     </div>
                     <div class="flex items-center justify-between">
-                        <strong>Размер:</strong>
-                        <span class="text-right"> {{ file.size }}</span>
+                        <strong class="flex-1">Размер:</strong>
+                        <span class="flex-1 text-right"> {{ file.size }} bytes</span>
                     </div>
                 </li>
             </ul>
 
-            <UButton
-                label="Загрузить"
-                type="submit"
-                :loading="isUploading"
-            />
+            <div class="flex gap-4 justify-end">
+                <UButton
+                    label="Загрузить"
+                    type="submit"
+                    color="green"
+                    :loading="isUploading"
+                />
+
+                <UButton
+                    label="Сбросить"
+                    color="red"
+                    @click="filesData = []"
+                />
+            </div>
         </div>
     </form>
-
-    <UAlert
-        v-if="uploadStatus === 'ERROR'"
-        title="Ошибка"
-        description="Попробуйте загрузить позже"
-        variant="soft"
-        color="red"
-        @close="uploadStatus = 'PENDING'"
-        :close-button="{
-            icon: 'i-heroicons-x-mark-20-solid',
-            color: 'white',
-            variant: 'link',
-            padded: false,
-        }"
-    />
 
     <UAlert
         v-if="uploadStatus === 'SUCCESS'"

@@ -26,3 +26,6 @@ search_data
 .DS_Store/
 **/uv.lock
 .vscode/
+**/__pycache__
+**/.venv
+**/.pytest_cache

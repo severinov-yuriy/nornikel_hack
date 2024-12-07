@@ -28,44 +28,32 @@ def split_into_chunks(text: str, chunk_size: int, overlap: int) -> List[str]:
     :param overlap: Количество перекрывающихся токенов между окнами.
     :return: Список текстовых кусочков.
     """
-    sentences = re.split(r"(?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=\.|\?)\s", text)
+    if chunk_size <= 0:
+        raise ValueError("chunk_size must be greater than 0")
+    if overlap < 0:
+        raise ValueError("overlap cannot be negative")
+    if overlap >= chunk_size:
+        raise ValueError("overlap must be smaller than chunk_size")
+
     chunks = []
-    current_chunk = []
+    start = 0
+    index = 0
 
-    current_length = 0
-    for sentence in sentences:
-        sentence_length = len(sentence.split())
-        if current_length + sentence_length > chunk_size:
-            chunks.append(" ".join(current_chunk))
-            current_chunk = current_chunk[-overlap:]
-            current_length = len(" ".join(current_chunk).split())
-
-        current_chunk.append(sentence)
-        current_length += sentence_length
-
-    if current_chunk:
-        chunks.append(" ".join(current_chunk))
+    while start < len(text):
+        end = start + chunk_size
+        chunks.append(text[start:end])
+        index += 1
+        start = end - overlap
 
     return chunks
 
 def process_doc(file_path: str):
-    pass
-
-def process_doc(file_path: str):
     md_txt = converter.convert(file_path).document.export_to_markdown()
-    return {
-        "text": md_txt,
-        "images": [],
-        "structure": [],
-    }
+    return md_txt
 
 def process_pdf(file_path: str):
     md_txt = converter.convert(file_path).document.export_to_markdown()
-    return {
-        "text": md_txt,
-        "images": [],
-        "structure": [],
-    }
+    return md_txt,
 
 
 # def extract_images_from_doc(file_path):
