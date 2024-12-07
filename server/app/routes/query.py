@@ -18,11 +18,7 @@ async def handle_query(request: QueryRequest):
     """
     try:
         # Инициализируем RAG-пайплайн
-        rag = RAGPipeline(
-            vector_store_path=Config.VECTOR_STORE_PATH,
-            db_path=Config.DB_PATH,
-            vector_dim=Config.VECTOR_DIM
-        )
+        rag = RAGPipeline(db_path=Config.DB_PATH)
         api_client = OpenRouterAPIClient(api_key=Config.API_KEY)
 
         # Обрабатываем запрос
@@ -32,7 +28,7 @@ async def handle_query(request: QueryRequest):
             top_k=Config.TOP_K,
             model=Config.MODEL_NAME
         )
-
         return response
+
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error processing query: {str(e)}") 
+        raise e
