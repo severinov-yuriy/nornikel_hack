@@ -21,3 +21,6 @@ client/.env
 client/.env.*
 !client/.env.example
 .env
+
+search_data
+.DS_Store/
