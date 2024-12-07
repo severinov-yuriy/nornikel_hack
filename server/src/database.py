@@ -75,12 +75,12 @@ def get_filename_by_id(file_id: int, db_path: str):
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
 
-    query = f"SELECT filename, ext FROM files WHERE file_id == {file_id}"
+    query = f"SELECT filename, ext, content_type FROM files WHERE file_id == {file_id}"
     cursor.execute(query)
     row = cursor.fetchall()
     conn.close()
 
-    return row[0][0], row[0][1]
+    return row[0][0], row[0][1], row[0][2]
 
 def get_files_list(db_path: str):
     """
@@ -168,7 +168,7 @@ def save_chunk(chunk: str, file_id: str, db_path: str):
         conn.close()
         return chunk_id
     except Exception as e:
-        return f'503 DB error: {e}'
+        raise Exception(e)
 
     
 
