@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ThemeToggle } from '@/features/theme-toggle'
-import { VHeader } from '@/widgets/header'
 import Sidebar from '@/widgets/sidebar/ui/Sidebar.vue'
 </script>
 
@@ -21,6 +20,7 @@ import Sidebar from '@/widgets/sidebar/ui/Sidebar.vue'
             <slot />
         </div>
     </div>
+    <UNotifications />
 </template>
 
 <style scoped></style>
