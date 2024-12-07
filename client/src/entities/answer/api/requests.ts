@@ -7,6 +7,7 @@ export async function getAnswer(query: string): Promise<AnswerResponse> {
             body: JSON.stringify({ query }),
             retry: false,
         })
+
         return {
             status: 'ok',
             payload: response
