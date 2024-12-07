@@ -1,26 +1,45 @@
 import os
+import asyncio
+from typing import List
 from fastapi import APIRouter, UploadFile, HTTPException
+
+from config import Config
+from src.database import save_metadata_to_db
 
 router = APIRouter()
 
-# Путь для сохранения временных файлов
-TEMP_FOLDER = "data/uploads"
-DB_PATH = "data/chunks.db"
-VECTOR_STORE_PATH = "data/vector_store.index"
-VECTOR_DIM = 384
-
 
 @router.post("/upload/")
-async def upload_archive(file: UploadFile):
+async def upload_file(files: List[UploadFile]):
     """
     Эндпоинт для загрузки архива документов.
     """
-    # Создаем временную папку, если она не существует
-    os.makedirs(TEMP_FOLDER, exist_ok=True)
+    files = await asyncio.gather(*[process_file(file) for file in files])
+    files = [{"filename": filename, "content_type": content_type, "ext": ext, "status": status}
+             for (filename, content_type, ext, status) in files]
+    return {
+        "message": "Files processed",
+        "files": files
+    }
 
-    # Сохраняем загруженный файл
-    archive_path = os.path.join(TEMP_FOLDER, file.filename)
-    with open(archive_path, "wb") as f:
-        f.write(await file.read())
+async def process_file(file: UploadFile):
+    filename = file.filename
+    content_type = file.content_type
+    ext = Config.ALLOWED_EXTENSIONS.get(file.content_type)
+    filename = filename[::-1].replace(ext[::-1], '', 1)[::-1]
 
-    return {"message": "Archive processed successfully"}
+    if file.content_type not in Config.ALLOWED_EXTENSIONS.keys():
+        return filename, content_type, ext, "400 Invalid document type"
+
+    status = save_metadata_to_db(filename, content_type, ext, Config.DB_PATH)
+
+    try:
+        # Сохраняем загруженный файл
+        os.makedirs(Config.FILES_FOLDER, exist_ok=True)
+        file_path = os.path.join(Config.FILES_FOLDER, file.filename)
+        with open(file_path, "wb") as f:
+            f.write(await file.read())
+    except:
+        status = "500 Internal Server Error"
+
+    return filename, content_type, ext, status
