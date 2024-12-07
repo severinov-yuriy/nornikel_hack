@@ -48,5 +48,4 @@ jobs:
           git pull origin main
           docker-compose down
           docker-compose pull
-          docker-compose build --no-cache
-          COMPOSE_HTTP_TIMEOUT=2400 docker-compose up -d
+          COMPOSE_HTTP_TIMEOUT=2400 docker-compose up --build
