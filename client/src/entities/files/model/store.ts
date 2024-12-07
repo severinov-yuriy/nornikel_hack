@@ -27,10 +27,17 @@ export const filesStore = defineStore('files', () => {
         allFiles.value = filesData
     }
 
+    function removeFile(id: number) {
+        if(allFiles.value && id) {
+            allFiles.value = allFiles.value?.filter(file => file.id !== id)
+        }
+    }
+
     return {
         allFiles,
         filesFetching,
         getFiles,
-        setFiles
+        setFiles,
+        removeFile
     }
 })

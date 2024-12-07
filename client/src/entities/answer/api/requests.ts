@@ -1,13 +1,16 @@
-import type { AnswerResponse } from 'shared-types'
+import type { Answer, AnswerResponse } from 'shared-types'
 
 export async function getAnswer(query: string): Promise<AnswerResponse> {
     try {
-        const response = await $fetch<AnswerResponse>('/api/query', {
+        const response = await $fetch<Answer>('/api/query', {
             method: 'post',
             body: JSON.stringify({ query }),
             retry: false,
         })
-        return response
+        return {
+            status: 'ok',
+            payload: response
+        }
     } catch (e) {
         return {
             status: 'error',

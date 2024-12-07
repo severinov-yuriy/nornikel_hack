@@ -11,7 +11,7 @@ export function useModel() {
         setDeleting()
 
         if (status === 'ok') {
-            await filesStore.getFiles()
+            filesStore.removeFile(id)
         }
 
         return status
