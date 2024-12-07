@@ -1,6 +1,7 @@
 import weaviate
 import os
 
+weaviate_client = None
 
 class WeaviateClient:
     client: weaviate.Client
@@ -35,6 +36,11 @@ class WeaviateClient:
                             "dataType": ["text"],
                         },
                         {
+                            "name": "chunk_id",
+                            "description": "Chunk id",
+                            "dataType": ["int"],
+                        },
+                        {
                             "name": "content",
                             "description": "The main content of the document",
                             "dataType": ["text"],
@@ -57,12 +63,21 @@ class WeaviateClient:
         documents = [
             {
                 "title": "AI Revolution",
+                "chunk_id": 1,
                 "content": "Artificial intelligence is transforming the world.",
             },
             {
                 "title": "Climate Change Effects",
+                "chunk_id": 1,
                 "content": "Climate change has significant environmental impacts.",
             },
         ]
         for doc in documents:
             self.client.data_object.create(data_object=doc, class_name="Document")
+
+def get_weaviate_client() -> WeaviateClient:
+    global weaviate_client
+    if weaviate_client is None:
+        weaviate_client = WeaviateClient(in_docker=True)
+        weaviate_client.set_classic_schema()
+    return weaviate_client

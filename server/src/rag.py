@@ -2,13 +2,13 @@ from typing import List, Dict
 from src.vectorization import TextVectorizer
 from src.vector_store import VectorStore
 from src.database import fetch_chunks_by_ids
-
+from src.weaviate_database import get_weaviate_client
 
 class RAGPipeline:
     def __init__(self, vector_store_path: str, db_path: str, vector_dim: int = 384, model_name: str = "all-MiniLM-L6-v2"):
         """
         Инициализация RAG-пайплайна.
-        
+
         :param vector_store_path: Путь к файлу векторного индекса.
         :param db_path: Путь к SQLite базе данных.
         :param vector_dim: Размерность векторов.
@@ -22,19 +22,19 @@ class RAGPipeline:
     def retrieve_context(self, query: str, top_k: int = 10) -> List[Dict[str, str]]:
         """
         Извлечение релевантного контекста на основе пользовательского запроса.
-        
+
         :param query: Запрос пользователя.
         :param top_k: Количество релевантных текстов для извлечения.
         :return: Список текстовых кусочков с метаданными.
         """
-        # Векторизация запроса
-        query_vector = self.vectorizer.vectorize([query])[0]
-
-        # Поиск ближайших соседей
-        results = self.vector_store.search(query_vector, top_k)
-
+        response = (
+            get_weaviate_client().client.query.get("Document", ["title", "content"])
+            .with_limit(top_k)
+            .with_near_text({"concepts": [query]})
+            .do()
+        )
         # Извлечение метаданных из базы данных
-        chunk_ids = [custom_id for custom_id, _ in results]  # Используем пользовательские идентификаторы
+        chunk_ids = [x["chunk_id"] for x in response["data"]["Get"]["Document"]]  # Используем пользовательские идентификаторы
         context_chunks = fetch_chunks_by_ids(chunk_ids, self.db_path)
 
         return context_chunks
@@ -42,7 +42,7 @@ class RAGPipeline:
     def generate_prompt(self, query: str, context_chunks: List[Dict[str, str]]) -> str:
         """
         Формирование промта для языковой модели.
-        
+
         :param query: Запрос пользователя.
         :param context_chunks: Список текстовых кусочков для контекста.
         :return: Готовый промт.
@@ -63,7 +63,7 @@ class RAGPipeline:
     def get_response(self, query: str, api_client, top_k: int, **kwargs) -> Dict[str, str]:
         """
         Получение ответа от языковой модели на основе RAG.
-        
+
         :param query: Запрос пользователя.
         :param api_client: Клиент для взаимодействия с API модели (объект, реализующий метод `generate`).
         :param top_k: Количество релевантных текстов для извлечения.
