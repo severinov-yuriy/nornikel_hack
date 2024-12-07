@@ -1,4 +1,5 @@
 import re
+from typing import List
 from docling.document_converter import DocumentConverter
 
 converter = DocumentConverter()
@@ -18,7 +19,7 @@ def clean_text(text):
     return re.sub(r"\s+", " ", text).strip()
 
 
-def split_into_chunks(text: str, chunk_size: int, overlap: int) -> list[str]:
+def split_into_chunks(text: str, chunk_size: int, overlap: int) -> List[str]:
     """
     Разделение текста на контекстные окна фиксированного размера.
 
@@ -57,7 +58,6 @@ def process_doc(file_path: str):
         "images": [],
         "structure": [],
     }
-
 
 def process_pdf(file_path: str):
     md_txt = converter.convert(file_path).document.export_to_markdown()
