@@ -6,7 +6,7 @@ export default defineEventHandler(async (event) => {
         return body
     }
     try {
-        const response = await $fetch(`${process.env.API_URL}/files`, {
+        const response = await $fetch(`${process.env.API_URL}/files/`, {
             method: 'delete',
             body,
         })
