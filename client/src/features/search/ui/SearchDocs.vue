@@ -1,7 +1,12 @@
 <script setup lang="ts">
+import { storeToRefs } from 'pinia'
 import { useModel } from '../model'
 import AnswerContent from './AnswerContent.vue'
-const { searchTerm, currentAnswer, isFetching, getData, error, setError } = useModel()
+import { answerModel } from '@/entities/answer'
+
+const { currentAnswer } = storeToRefs(answerModel.answerStore())
+
+const { searchTerm, isFetching, getData, error, setError } = useModel()
 </script>
 <template>
     <div class="flex w-full flex-col gap-6">
