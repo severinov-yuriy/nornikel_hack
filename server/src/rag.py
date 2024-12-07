@@ -1,22 +1,16 @@
 from typing import List, Dict
-from src.vectorization import TextVectorizer
-from src.vector_store import VectorStore
 from src.database import fetch_chunks_by_ids
 from src.weaviate_database import get_weaviate_client
 
 class RAGPipeline:
-    def __init__(self, vector_store_path: str, db_path: str, vector_dim: int = 384, model_name: str = "all-MiniLM-L6-v2"):
+    def __init__(self, db_path: str):
         """
         Инициализация RAG-пайплайна.
 
-        :param vector_store_path: Путь к файлу векторного индекса.
         :param db_path: Путь к SQLite базе данных.
         :param vector_dim: Размерность векторов.
         :param model_name: Имя модели SentenceTransformers для векторизации.
         """
-        self.vector_store = VectorStore(vector_dim, vector_store_path)
-        self.vector_store.load_index()
-        self.vectorizer = TextVectorizer(model_name)
         self.db_path = db_path
 
     def retrieve_context(self, query: str, top_k: int = 10) -> List[Dict[str, str]]:
@@ -35,6 +29,7 @@ class RAGPipeline:
         )
         # Извлечение метаданных из базы данных
         chunk_ids = [x["chunk_id"] for x in response["data"]["Get"]["Document"]]  # Используем пользовательские идентификаторы
+        print(chunk_ids)
         context_chunks = fetch_chunks_by_ids(chunk_ids, self.db_path)
 
         return context_chunks
@@ -78,11 +73,10 @@ class RAGPipeline:
         # Получение ответа от модели
         answer = api_client.generate(prompt, **kwargs)
 
-        files = {context_chunks}
+        files = set(context_chunks)
 
         return {
             "query": query,
             "answer": answer,
-            "context_files": files,
-            "total": len(files)
-        }
+            "files": files
+            }
