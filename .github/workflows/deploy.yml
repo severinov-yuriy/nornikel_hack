@@ -38,8 +38,11 @@ jobs:
         username: ${{ secrets.VM_USER }}
         key: ${{ secrets.VM_SSH_KEY }}
         port: 22
-        timeout: 1h # Увеличиваем таймаут до 1 часа
+        timeout: 1h
         script: |
+          # Установка переменной окружения для Docker Compose
+          export COMPOSE_HTTP_TIMEOUT=3600
+    
           # Переменные окружения
           echo "API_KEY=${{ secrets.API_KEY }}" >> ~/nornikel_hack/.env
 
@@ -48,4 +51,4 @@ jobs:
           git pull origin main
           docker-compose down
           docker-compose pull
-          COMPOSE_HTTP_TIMEOUT=2400 docker-compose up --build
+          docker-compose up --build
