@@ -2,6 +2,7 @@ import { filesApi, filesModel } from '@/entities/files'
 import { useToggle } from '@vueuse/core'
 
 export function useModel() {
+    const toast = useToast()
     const filesStore = filesModel.filesStore()
 
     const filesData = ref<File[]>([])
@@ -27,27 +28,36 @@ export function useModel() {
     async function onSubmit() {
         const formData = new FormData()
 
-        filesData.value.forEach((file) => formData.append(`files[]`, file, file.name))
+        filesData.value.forEach((file) => formData.append(`files`, file, file.name))
 
         toggleUploading()
 
         try {
             const response = await filesApi.uploadFiles(formData)
 
-            console.log(response)
 
             if (response.status === 'error') {
-                uploadStatus.value = 'ERROR'
+                toast.add({
+                    color: 'red',
+                    title: 'Ошибка',
+                    description: 'Не удалось загрузить, попробуйте еще раз...',
+                    timeout: 30000
+                })
                 return
             }
 
             await filesStore.getFiles()
 
+            filesData.value = []
             uploadStatus.value = 'SUCCESS'
         } catch {
-            uploadStatus.value = 'ERROR'
+            toast.add({
+                color: 'red',
+                title: 'Ошибка',
+                description: 'Не удалось загрузить, попробуйте еще раз...',
+                timeout: 0
+            })
         } finally {
-            filesData.value = []
             toggleUploading()
         }
     }
