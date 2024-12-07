@@ -14,6 +14,7 @@
 #         return result.get("text", "")
 
 
-# def process_audio(file_path: str):
-#     text = AudioProcessor().transcribe(file_path)
-#     return text
+def process_audio(file_path: str):
+    pass
+    # text = AudioProcessor().transcribe(file_path)
+    # return text

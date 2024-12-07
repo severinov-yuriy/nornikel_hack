@@ -1,7 +1,6 @@
 import re
 from docx import Document
 from PIL import Image
-import fitz
 from nltk.tokenize import sent_tokenize
 
 def process_txt(file_path: str):
@@ -44,8 +43,11 @@ def split_into_chunks(text: str, chunk_size: int, overlap: int) -> List[str]:
 
     return chunks
 
+def process_doc(file_path: str):
+    pass
 
-
+def process_pdf(file_path: str):
+    pass
 
 
 
