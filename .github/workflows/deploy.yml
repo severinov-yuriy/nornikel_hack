@@ -39,6 +39,7 @@ jobs:
         key: ${{ secrets.VM_SSH_KEY }}
         port: 22
         timeout: 1h
+        command_timeout: 40m
         script: |
           # Установка переменной окружения для Docker Compose
           export COMPOSE_HTTP_TIMEOUT=3600
