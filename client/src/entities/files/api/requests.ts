@@ -41,9 +41,6 @@ export async function uploadFiles(formData: FormData): Promise<BaseResponse<{}>>
     try {
         const response = await $fetch('/api/upload', {
             method: 'post',
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
             body: formData,
         })
         return {

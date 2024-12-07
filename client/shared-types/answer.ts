@@ -4,7 +4,7 @@ export type AnswerResponse = BaseResponse<Answer>
 
 export type Answer = {
     query: string
-    response: string
+    answer: string
     files: FileMeta[]
 }
 

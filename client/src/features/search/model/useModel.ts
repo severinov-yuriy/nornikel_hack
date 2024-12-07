@@ -1,8 +1,16 @@
-import { answerModel } from '@/entities/answer'
+import { answerApi } from '@/entities/answer'
+import { filesModel } from '@/entities/files'
+import { useToggle } from '@vueuse/core'
+import type { Answer } from 'shared-types'
 
 export function useModel() {
-    const answerStore = answerModel.answerStore()
-    const { answerFetching, currentAnswer } = storeToRefs(answerStore)
+
+    const currentAnswer = ref<Answer>()
+
+    const [answerFetching, toggleAnswerFetching] = useToggle()
+
+    const filesStore = filesModel.filesStore()
+
     const searchTerm = ref('')
     const error = ref<{ title: string; message: string } | null>(null)
 
@@ -18,13 +26,26 @@ export function useModel() {
     }
 
     async function getData() {
-        const status = await answerStore.askQuestion(searchTerm.value)
+        if(!searchTerm.value.length) return
+        
+        toggleAnswerFetching()
 
-        if (status !== 'ok') {
+        const res = await answerApi.getAnswer(searchTerm.value)
+
+        toggleAnswerFetching()
+
+        if (res.status !== 'ok') {
             return setError({
                 title: 'Упс!',
                 message: 'Что-то пошло не так...',
             })
+        }
+
+        if(res.payload) {
+            const {files} = res.payload
+
+            files && filesStore.setFiles(files)
+            currentAnswer.value = res.payload
         }
 
         searchTerm.value = ''
