@@ -5,7 +5,7 @@ import type { Answer } from 'shared-types'
 
 export function useModel() {
 
-    const currentAnswer = ref<Answer>()
+    const currentAnswer = ref<Answer | null>(null)
 
     const [answerFetching, toggleAnswerFetching] = useToggle()
 
@@ -44,12 +44,18 @@ export function useModel() {
         if(res.payload) {
             const {files} = res.payload
 
-            files && filesStore.setFiles(files)
+            filesStore.setFiles(files)
             currentAnswer.value = res.payload
         }
 
         searchTerm.value = ''
         setError(null)
+    }
+
+    function reset() {
+        setError(null)
+        currentAnswer.value = null
+        filesStore.getFiles()
     }
 
     return {
@@ -59,5 +65,6 @@ export function useModel() {
         answerFetching,
         error,
         setError,
+        reset
     }
 }

@@ -7,12 +7,9 @@ export default defineEventHandler(async (event) => {
 
     if(process.dev) {
         return {
-          status: 'ok',
-          payload: {
             ...answer,
             query: body.query,
           }
-        }
     }
 
     if (!body.query) {
@@ -27,6 +24,8 @@ export default defineEventHandler(async (event) => {
             method: 'post',
             body: JSON.stringify(body),
         })
+
+        console.log(response)
 
         return response
     } catch (e) {
