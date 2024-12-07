@@ -1,5 +1,6 @@
 # import whisper
 
+
 # class AudioProcessor:
 #     def __init__(self, model_name="tiny"):
 #         self.model = whisper.load_model(model_name)
@@ -14,6 +15,7 @@
 #         return result.get("text", "")
 
 
-# def process_audio(file_path: str):
-#     text = AudioProcessor().transcribe(file_path)
-#     return text
+def process_audio(file_path: str):
+    pass
+    # text = AudioProcessor().transcribe(file_path)
+    # return text

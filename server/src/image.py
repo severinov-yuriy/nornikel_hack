@@ -21,7 +21,8 @@
 #         return self.processor.decode(outputs[0], skip_special_tokens=True)
 
 
-# def process_image(file_path: str):
+def process_image(file_path: str):
+    pass
 #     """
 #     Обрабатывает изображение, генерируя его описание.
 #     :param file_path: Путь к изображению.

@@ -191,40 +191,21 @@ def save_chunks_to_db(chunks: List[Dict[str, str]], db_path: str = "data/chunks.
     conn.commit()
     conn.close()
 
-
-def fetch_all_chunks(db_path: str = "data/chunks.db") -> List[Dict[str, str]]:
-    """
-    Извлечение всех кусочков текста из базы данных.
-
-    :param db_path: Путь к файлу базы данных.
-    :return: Список словарей с кусочками текста.
-    """
-    conn = sqlite3.connect(db_path)
-    cursor = conn.cursor()
-
-    cursor.execute("SELECT id, file_path, chunk_text FROM text_chunks")
-    rows = cursor.fetchall()
-
-    conn.close()
-
-    return [{"id": row[0], "file_path": row[1], "chunk_text": row[2]} for row in rows]
-
-
 def fetch_chunks_by_ids(ids: List[str], db_path: str = "data/chunks.db") -> List[Dict[str, str]]:
     """
     Извлечение кусочков текста по их идентификаторам.
 
-    :param ids: Список идентификаторов.
+    :param ids: Список идентификаторов чанков.
     :param db_path: Путь к файлу базы данных.
     :return: Список словарей с кусочками текста.
     """
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
 
-    query = f"SELECT m.id, tc.file_path, tc.chunk_text FROM text_chunks tc LEFT JOIN metadata m ON tc.id==m.file_path WHERE m.id IN ({','.join(['?'] * len(ids))})"
+    query = f"SELECT tc.file_id, f.filename, f.ext, tc.chunk_text FROM text_chunks tc LEFT JOIN files f ON tc.file_id==f.file_id WHERE tc.chunk_id IN ({','.join(['?'] * len(ids))})"
     cursor.execute(query, ids)
     rows = cursor.fetchall()
 
     conn.close()
 
-    return [{"id": row[0], "file_path": row[1], "chunk_text": row[2]} for row in rows]
+    return [{"id": row[0], "name": row[1], 'ext': row[3], "chunk_text": row[3]} for row in rows]
