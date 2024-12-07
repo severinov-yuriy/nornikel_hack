@@ -19,13 +19,18 @@ export const filesStore = defineStore('files', () => {
         }
 
         if (response.payload?.files?.length) {
-            allFiles.value = response.payload.files
+            setFiles(response.payload.files)
         }
+    }
+
+    function setFiles(filesData: FileMeta[]) {
+        allFiles.value = filesData
     }
 
     return {
         allFiles,
         filesFetching,
         getFiles,
+        setFiles
     }
 })

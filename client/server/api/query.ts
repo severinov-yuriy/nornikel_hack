@@ -1,7 +1,19 @@
 import { AnswerResponse } from '~/shared-types'
+import answer from './answer.json'
+
 
 export default defineEventHandler(async (event) => {
     const body = await readBody(event)
+
+    if(process.dev) {
+        return {
+          status: 'ok',
+          payload: {
+            ...answer,
+            query: body.query,
+          }
+        }
+    }
 
     if (!body.query) {
         return createError({
