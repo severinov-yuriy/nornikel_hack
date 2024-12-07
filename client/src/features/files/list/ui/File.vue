@@ -38,11 +38,12 @@ const icons = {
             <template #panel>
                 <div class="flex flex-col px-1 py-2 dark:bg-slate-700">
                     <UButton
-                        @click="downloadFile(file.id)"
                         label="Скачать"
                         size="xs"
                         variant="link"
                         icon="i-heroicons-arrow-down-tray"
+                        :to="`/api/files/?id=${file.id}`" target="_blank"
+
                     />
                     <UButton
                         label="Удалить"
