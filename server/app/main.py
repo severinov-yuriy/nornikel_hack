@@ -1,6 +1,13 @@
+import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.routes import upload, query
+from app.routes import upload, query, files
+from src.database import init_database
+from config import Config
+
+# Инициализация базы данных
+os.makedirs(Config.DATA_FOLDER, exist_ok=True)
+init_database(Config.DB_PATH)
 
 # Инициализация приложения
 app = FastAPI(
@@ -10,8 +17,9 @@ app = FastAPI(
     )
 
 # Регистрация маршрутов
-app.include_router(upload.router, tags=["Upload"])
+app.include_router(upload.router, tags=["Filesystem"])
 app.include_router(query.router, tags=["Query"])
+app.include_router(files.router, tags=["Filesystem"])
 
 app.add_middleware(
     CORSMiddleware,

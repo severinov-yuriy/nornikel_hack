@@ -20,6 +20,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8000:8000"
+    env_file: 
+      - .env # Указываем путь к файлу .env
     networks:
       - app_network
 

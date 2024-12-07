@@ -31,7 +31,7 @@ jobs:
     - name: Add host to known_hosts
       run: ssh-keyscan -H ${{ secrets.VM_HOST }} >> ~/.ssh/known_hosts
 
-    - name: Deploy to VM
+    - name: Deploy and pass environment variables to VM
       uses: appleboy/ssh-action@v0.1.10
       with:
         host: ${{ secrets.VM_HOST }}
@@ -39,6 +39,10 @@ jobs:
         key: ${{ secrets.VM_SSH_KEY }}
         port: 22
         script: |
+          # Переменные окружения
+          echo "API_KEY=${{ secrets.API_KEY }}" >> ~/nornikel_hack/.env
+
+          # Обновление кода и перезапуск
           cd ~/nornikel_hack
           git pull origin main
           docker-compose down
