@@ -1,5 +1,5 @@
 from typing import List
-from fastembed import FastEmbed
+from fastembed import TextEmbedding
 
 class TextVectorizer:
     def __init__(self, model_name: str = "all-MiniLM-L6-v2"):
@@ -7,7 +7,7 @@ class TextVectorizer:
         Инициализация векторизатора текста с использованием FastEmbed.
         :param model_name: Имя модели для векторизации.
         """
-        self.model = FastEmbed(model_name=model_name)
+        self.model = TextEmbedding(model_name="BAAI/bge-small-en-v1.5")
 
     def vectorize(self, texts: List[str]) -> List[List[float]]:
         """
@@ -16,5 +16,4 @@ class TextVectorizer:
         :return: Список векторных представлений.
         """
         # Векторизация текстов
-        embeddings = self.model.embed(texts)
-        return embeddings.tolist()  # Преобразование в список для совместимости
+        return list(self.model.embed(texts))  # Преобразование в список для совместимости

@@ -1,4 +1,4 @@
-# import faiss
+import faiss
 import numpy as np
 from typing import List, Tuple
 
@@ -14,7 +14,7 @@ class VectorStore:
         self.index_path = index_path
 
         # Используем IndexIDMap для сохранения пользовательских идентификаторов
-        # self.index = faiss.IndexIDMap(faiss.IndexFlatL2(vector_dim))
+        self.index = faiss.IndexIDMap(faiss.IndexFlatL2(vector_dim))
 
     def add_vectors(self, ids: List[int], vectors: List[List[float]]) -> None:
         """
@@ -54,15 +54,15 @@ class VectorStore:
         """
         Сохранение индекса на диск.
         """
-        # faiss.write_index(self.index, self.index_path)
+        faiss.write_index(self.index, self.index_path)
 
     def load_index(self) -> None:
         """
         Загрузка индекса с диска.
         """
-        # self.index = faiss.read_index(self.index_path)
+        self.index = faiss.read_index(self.index_path)
         # Оборачиваем загруженный индекс в IndexIDMap для поддержки идентификаторов
-        # self.index = faiss.IndexIDMap(self.index)
+        self.index = faiss.IndexIDMap(self.index)
 
     def get_vector_count(self) -> int:
         """
