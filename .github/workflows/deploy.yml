@@ -31,6 +31,9 @@ jobs:
     - name: Add host to known_hosts
       run: ssh-keyscan -H ${{ secrets.VM_HOST }} >> ~/.ssh/known_hosts
 
+    - name: Set Docker Compose Timeout
+      run: echo "COMPOSE_HTTP_TIMEOUT=600" >> $GITHUB_ENV    
+
     - name: Deploy and pass environment variables to VM
       uses: appleboy/ssh-action@v0.1.10
       with:
@@ -38,7 +41,7 @@ jobs:
         username: ${{ secrets.VM_USER }}
         key: ${{ secrets.VM_SSH_KEY }}
         port: 22
-        timeout: 2400s
+        timeout: 1h # Увеличиваем таймаут до 1 часа
         script: |
           # Переменные окружения
           echo "API_KEY=${{ secrets.API_KEY }}" >> ~/nornikel_hack/.env
