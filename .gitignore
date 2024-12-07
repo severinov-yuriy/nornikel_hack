@@ -24,3 +24,5 @@ client/.env.*
 
 search_data
 .DS_Store/
+**/uv.lock
+.vscode/

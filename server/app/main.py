@@ -4,17 +4,19 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.routes import upload, query, files
 from src.database import init_database
 from config import Config
+from src.weaviate_database import WeaviateClient
 
 # Инициализация базы данных
 os.makedirs(Config.DATA_FOLDER, exist_ok=True)
 init_database(Config.DB_PATH)
+weaviate_client = WeaviateClient(in_docker=True)
 
 # Инициализация приложения
 app = FastAPI(
     title="RAG Service",
     description="A Retrieval-Augmented Generation (RAG) Service for document indexing",
-    version="1.0.0"
-    )
+    version="1.0.0",
+)
 
 # Регистрация маршрутов
 app.include_router(upload.router, tags=["Filesystem"])
@@ -28,6 +30,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 # Точка входа для проверки статуса
 @app.get("/")
