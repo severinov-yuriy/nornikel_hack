@@ -14,7 +14,7 @@ const { isOverDropZone } = useDropZone(dropZoneRef, {
 
 <template>
     <form
-        class="it flex flex-col justify-center"
+        class="flex h-full flex-1 flex-col justify-center"
         @submit.prevent="onSubmit"
         v-if="uploadStatus === 'PENDING'"
     >
@@ -45,7 +45,10 @@ const { isOverDropZone } = useDropZone(dropZoneRef, {
             Перетащите файлы для загрузки
         </label>
 
-        <div class="flex w-full flex-col gap-4">
+        <div
+            class="flex h-full w-full flex-1 flex-col justify-between gap-4"
+            v-else
+        >
             <ul class="flex w-full flex-col gap-2">
                 <li
                     v-for="file in filesData"
@@ -67,7 +70,6 @@ const { isOverDropZone } = useDropZone(dropZoneRef, {
             </ul>
 
             <UButton
-                v-if="filesData.length"
                 label="Загрузить"
                 type="submit"
                 :loading="isUploading"

@@ -16,7 +16,28 @@ export async function getAllFiles(): Promise<BaseResponse<AllFilesPayload>> {
     }
 }
 
-export async function uploadFiles(formData: FormData) {
+export async function deleteFile(id: number): Promise<BaseResponse<AllFilesPayload>> {
+    try {
+        const response = await $fetch<AllFilesPayload>('/api/files', {
+            method: 'DELETE',
+            body: JSON.stringify({
+                id,
+            }),
+        })
+        return {
+            status: 'ok',
+            payload: response,
+        }
+    } catch (e) {
+        return {
+            status: 'error',
+            errorCode: '666',
+            errorMessage: 'Something went wrong',
+        }
+    }
+}
+
+export async function uploadFiles(formData: FormData): Promise<BaseResponse<{}>> {
     try {
         const response = await $fetch('/api/upload', {
             method: 'post',
@@ -25,7 +46,10 @@ export async function uploadFiles(formData: FormData) {
             },
             body: formData,
         })
-        return response
+        return {
+            status: 'ok',
+            payload: undefined,
+        }
     } catch (e) {
         return {
             status: 'error',

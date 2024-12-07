@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { DocIcon, ImageIcon, PdfIcon } from '@/shared/icons'
-import type { MdiIconString } from 'node_modules/nuxt-mdi/dist/runtime/components/MdiIcon'
 import type { FileMeta } from 'shared-types'
+import { useModel } from '../model'
+
+const { deleteFile, downloadFile, isDeleting } = useModel()
 
 const { file } = defineProps<{
     file: FileMeta
@@ -36,6 +38,7 @@ const icons = {
             <template #panel>
                 <div class="flex flex-col px-1 py-2 dark:bg-slate-700">
                     <UButton
+                        @click="downloadFile(file.id)"
                         label="Скачать"
                         size="xs"
                         variant="link"
@@ -47,6 +50,8 @@ const icons = {
                         variant="link"
                         color="red"
                         icon="i-heroicons-trash"
+                        @click="deleteFile(file.id)"
+                        :loading="isDeleting"
                     />
                 </div>
             </template>

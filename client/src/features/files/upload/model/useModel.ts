@@ -36,6 +36,11 @@ export function useModel() {
 
             console.log(response)
 
+            if (response.status === 'error') {
+                uploadStatus.value = 'ERROR'
+                return
+            }
+
             await filesStore.getFiles()
 
             uploadStatus.value = 'SUCCESS'
