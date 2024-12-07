@@ -37,20 +37,14 @@ const icons = {
 
             <template #panel>
                 <div class="flex flex-col px-1 py-2 dark:bg-slate-700">
-                    <UButton
-                        label="Скачать"
-                        size="xs"
-                        variant="link"
-                        icon="i-heroicons-arrow-down-tray"
-                        :to="`/api/files/?id=${file.id}`" target="_blank"
+                 
+                    <a class="text-sm px-2 hover:underline" :href="`/api/files/?id=${file.id}`" :download="file.name">Скачать</a>
 
-                    />
                     <UButton
                         label="Удалить"
-                        size="xs"
+                        size="sm"
                         variant="link"
                         color="red"
-                        icon="i-heroicons-trash"
                         @click="deleteFile(file.id)"
                         :loading="isDeleting"
                     />
