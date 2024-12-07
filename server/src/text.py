@@ -1,20 +1,24 @@
 import re
-from docx import Document
-from PIL import Image
-from nltk.tokenize import sent_tokenize
+from docling.document_converter import DocumentConverter
+
+converter = DocumentConverter()
+
 
 def process_txt(file_path: str):
-    with open(file_path, 'r', encoding='utf-8') as f:
+    with open(file_path, "r", encoding="utf-8") as f:
         text = f.read()
     return text
+
 
 def preprocess_text(text: str):
     return clean_text(text)
 
-def clean_text(text):
-    return re.sub(r'\s+', ' ', text).strip()
 
-def split_into_chunks(text: str, chunk_size: int, overlap: int) -> List[str]:
+def clean_text(text):
+    return re.sub(r"\s+", " ", text).strip()
+
+
+def split_into_chunks(text: str, chunk_size: int, overlap: int) -> list[str]:
     """
     Разделение текста на контекстные окна фиксированного размера.
 
@@ -46,48 +50,23 @@ def split_into_chunks(text: str, chunk_size: int, overlap: int) -> List[str]:
 def process_doc(file_path: str):
     pass
 
+def process_doc(file_path: str):
+    md_txt = converter.convert(file_path).document.export_to_markdown()
+    return {
+        "text": md_txt,
+        "images": [],
+        "structure": [],
+    }
+
+
 def process_pdf(file_path: str):
-    pass
+    md_txt = converter.convert(file_path).document.export_to_markdown()
+    return {
+        "text": md_txt,
+        "images": [],
+        "structure": [],
+    }
 
-
-
-
-# def process_doc(file_path: str):
-#     doc = Document(file_path)
-#     text = "\n".join([p.text for p in doc.paragraphs])
-#     images = extract_images_from_doc(file_path)
-#     return {
-#         "text": text,
-#         "images": describe_images(images),
-#         "structure": DoclingProcessor.analyze(text)
-#     }
-
-# def process_pdf(file_path: str):
-#     doc = fitz.open(file_path)
-#     text = ""
-#     images = []
-#     for page in doc:
-#         text += page.get_text()
-#         images.extend(extract_images_from_pdf(file_path))
-#     return {
-#         "text": text,
-#         "images": describe_images(images),
-#         "structure": ColpaliModel.analyze(text)
-#     }
-
-
-# def process_pdf(file_path: str):
-#     doc = fitz.open(file_path)
-#     text = ""
-#     images = []
-#     for page in doc:
-#         text += page.get_text()
-#         images.extend(page.get_images(full=True))
-#     return {
-#         "text": text,
-#         "images": describe_images(images),
-#         "structure": ColpaliModel.analyze(text)
-#     }
 
 # def extract_images_from_doc(file_path):
 #     """
