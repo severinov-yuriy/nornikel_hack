@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { useModel } from '../model'
 import AnswerContent from './AnswerContent.vue'
-const { searchTerm, currentAnswer, isFetching, getData, error, setError } = useModel()
+
+const { searchTerm, answerFetching, currentAnswer, getData, error, setError } = useModel()
 </script>
 <template>
     <div class="flex w-full flex-col gap-6">
@@ -14,7 +15,7 @@ const { searchTerm, currentAnswer, isFetching, getData, error, setError } = useM
                 icon="i-heroicons-magnifying-glass-20-solid"
                 size="xl"
                 placeholder="Ввод..."
-                :loading="isFetching"
+                :loading="answerFetching"
                 class="flex-1"
             />
             <UButton
@@ -22,7 +23,7 @@ const { searchTerm, currentAnswer, isFetching, getData, error, setError } = useM
                 type="submit"
                 size="xl"
                 class="min-w-24 text-center"
-                :loading="isFetching"
+                :loading="answerFetching"
             />
         </form>
 

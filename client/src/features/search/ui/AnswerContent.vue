@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import type { answerApi } from '@/entities/answer'
-import type { AnswerResponse } from 'shared-types'
+import type { Answer } from 'shared-types'
 
 const { content } = defineProps<{
-    content: AnswerResponse
+    content: Answer
 }>()
 
-const paragraphs = computed(() => content.answer.split(/\n/).filter((str) => str.length))
+const paragraphs = computed(() => content.response.split(/\n/).filter((str) => str.length))
 </script>
 <template>
     <section class="flex w-full flex-col gap-6 py-6">
@@ -17,7 +16,7 @@ const paragraphs = computed(() => content.answer.split(/\n/).filter((str) => str
         <UContainer class="flex w-full flex-col gap-2">
             <h4 class="text-xl">Найдено в:</h4>
             <ul class="list-disc text-left text-blue-600 dark:text-blue-300">
-                <li v-for="file in content.context_files">{{ file }}</li>
+                <li v-for="file in content.files">{{ file }}</li>
             </ul>
         </UContainer>
 

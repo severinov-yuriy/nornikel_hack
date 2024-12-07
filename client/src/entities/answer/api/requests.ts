@@ -1,6 +1,6 @@
 import type { AnswerResponse } from 'shared-types'
 
-export async function getAnswer(query: string) {
+export async function getAnswer(query: string): Promise<AnswerResponse> {
     try {
         const response = await $fetch<AnswerResponse>('/api/query', {
             method: 'post',
@@ -9,6 +9,10 @@ export async function getAnswer(query: string) {
         })
         return response
     } catch (e) {
-        return null
+        return {
+            status: 'error',
+            errorCode: '666',
+            errorMessage: 'Something went wrong',
+        }
     }
 }

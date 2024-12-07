@@ -1,9 +1,9 @@
-import { answerApi } from '@/entities/answer'
-import type { AnswerResponse } from 'shared-types'
+import { answerModel } from '@/entities/answer'
 
 export function useModel() {
+    const answerStore = answerModel.answerStore()
+    const { answerFetching, currentAnswer } = storeToRefs(answerStore)
     const searchTerm = ref('')
-    const currentAnswer = ref<AnswerResponse>()
     const error = ref<{ title: string; message: string } | null>(null)
 
     function setError(payload: { title: string; message: string } | null) {
@@ -17,16 +17,10 @@ export function useModel() {
         }
     }
 
-    const isFetching = ref(false)
-
     async function getData() {
-        isFetching.value = true
+        const status = await answerStore.askQuestion(searchTerm.value)
 
-        const answer = await answerApi.getAnswer(searchTerm.value)
-
-        isFetching.value = false
-
-        if (!answer) {
+        if (status !== 'ok') {
             return setError({
                 title: 'Упс!',
                 message: 'Что-то пошло не так...',
@@ -34,15 +28,14 @@ export function useModel() {
         }
 
         searchTerm.value = ''
-        currentAnswer.value = answer
         setError(null)
     }
 
     return {
+        currentAnswer,
         searchTerm,
         getData,
-        currentAnswer,
-        isFetching,
+        answerFetching,
         error,
         setError,
     }
