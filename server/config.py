@@ -17,6 +17,7 @@ class Config:
         "application/msword": ".doc",
         "application/vnd.openxmlformats-officedocument.wordprocessingml.document": ".docx",
         "application/pdf": ".pdf",
+        "audio/mpeg": ".mp3",
         "image/jpeg": ".jpeg",
         "image/png": ".png"
     }
