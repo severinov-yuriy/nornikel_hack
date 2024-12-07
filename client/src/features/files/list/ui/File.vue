@@ -42,7 +42,7 @@ const icons = {
                         size="xs"
                         variant="link"
                         icon="i-heroicons-arrow-down-tray"
-                        :to="`/api/files/?id=${file.id}`" target="_blank"
+                        @click="downloadFile(file)"
 
                     />
                     <UButton
