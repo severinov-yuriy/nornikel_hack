@@ -13,5 +13,15 @@
   "stylelint.snippet": ["css", "sass", "scss", "postcss"],
   "stylelint.validate": ["css", "sass", "scss", "postcss"],
   "typescript.tsdk": "node_modules/typescript/lib",
-  "cSpell.words": ["nuxt"]
+  "cSpell.words": [
+    "nuxt"
+  ],
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff"
+  },
+  "python.testing.pytestArgs": [
+    "server"
+  ],
+  "python.testing.unittestEnabled": false,
+  "python.testing.pytestEnabled": true
 }
