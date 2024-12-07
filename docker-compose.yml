@@ -28,6 +28,7 @@ services:
       - weaviate
     environment:
       - WEAVIATE_URL=http://weaviate:8080
+    restart: "on-failure:10"
 
   weaviate:
     image: cr.weaviate.io/semitechnologies/weaviate:1.27.7
