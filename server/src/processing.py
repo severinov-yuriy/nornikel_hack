@@ -10,9 +10,8 @@ from src.text import (
 
 # from src.audio import process_audio
 # from src.image import process_image
-from src.database import save_text, save_chunk
-from src.vectorization import TextVectorizer
-from src.vector_store import VectorStore
+from src.database import save_text, save_ch unk
+from src.weaviate_database import get_weaviate_client
 
 EXTRACTORS = {
     "text/plain": process_txt,
@@ -45,17 +44,16 @@ def process_files(files: List[dict], config):
             text = preprocess_text(text)
             save_text(file.get("file_id"), text, config.DB_PATH)
             chunks = split_into_chunks(text, config.CHUNK_SIZE, config.OVERLAP)
-            for chunk in enumerate(chunks):
+            for chunk in chunks:
                 chunk_id = save_chunk(chunk, file.get("file_id"), config.DB_PATH)
                 chunk_data.append({"id": chunk_id, "chunk": chunk})
         except Exception as e:
             print(f"Error processing {file.get('file_id')}: {e}")
-        vectorizer = TextVectorizer()
-        idx = [chunk["id"] for chunk in chunks]
-        texts = [chunk["chunk"] for chunk in chunks]
-        vectors = vectorizer.vectorize(texts)
-
-        # Инициализируем векторное хранилище и индексируем кусочки
-        vector_store = VectorStore(config.VECTOR_DIM, config.VECTOR_STORE_PATH)
-        vector_store.add_vectors(idx, vectors)
-        vector_store.save_index()
+        for id_and_chunk in chunk_data:
+            get_weaviate_client().add_documents([
+                {
+                    "title" : file.get('file_title'),
+                    "chunk_id" : id_and_chunk["id"],
+                    "content" : id_and_chunk["chunk"],
+                }
+            ])
