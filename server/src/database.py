@@ -182,7 +182,7 @@ def fetch_chunks_by_ids(ids: List[str], db_path: str = "data/chunks.db") -> List
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
 
-    query = f"SELECT tc.file_id, f.filename, f.ext, tc.chunk_text FROM text_chunks tc LEFT JOIN files f ON tc.file_id==f.file_id WHERE tc.chunk_id IN ({','.join(['?'] * len(ids))})"
+    query = f"SELECT tc.chunk_id, f.filename, f.ext, tc.chunk_text FROM text_chunks tc LEFT JOIN files f ON tc.file_id==f.file_id WHERE tc.chunk_id IN ({','.join(['?'] * len(ids))})"
     cursor.execute(query, ids)
     rows = cursor.fetchall()
     

@@ -53,7 +53,7 @@ def process_doc(file_path: str):
 
 def process_pdf(file_path: str):
     md_txt = converter.convert(file_path).document.export_to_markdown()
-    return md_txt,
+    return md_txt
 
 
 # def extract_images_from_doc(file_path):
