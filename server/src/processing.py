@@ -38,7 +38,7 @@ def process_files(files: List[dict], config):
         try:
             extract = EXTRACTORS.get(file.get("content_type"))
             filepath = os.path.join(
-                config.FILES_FOLDER, file.get("filename"), file.get("ext")
+                config.FILES_FOLDER, file.get("filename")+file.get("ext")
             )
             text = extract(filepath)
             text = preprocess_text(text)
@@ -52,8 +52,9 @@ def process_files(files: List[dict], config):
         for id_and_chunk in chunk_data:
             get_weaviate_client().add_documents([
                 {
-                    "title" : file.get('file_title'),
+                    "title" : file.get('filename', "Unknown"),
                     "chunk_id" : id_and_chunk["id"],
                     "content" : id_and_chunk["chunk"],
                 }
             ])
+        print(f"Ready file {file.get('file_id')=} {file.get('filename')=}")

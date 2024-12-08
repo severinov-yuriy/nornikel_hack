@@ -1,7 +1,7 @@
 import os
 import asyncio
 from typing import List
-from fastapi import APIRouter, UploadFile, HTTPException, BackgroundTasks, Request
+from fastapi import APIRouter, UploadFile, BackgroundTasks
 
 from config import Config
 from src.database import save_metadata_to_db
@@ -30,21 +30,15 @@ async def upload_file(files: List[UploadFile], background_tasks: BackgroundTasks
 async def process_file(file: UploadFile):
     filename = file.filename
     content_type = file.content_type
-    ext = Config.ALLOWED_EXTENSIONS.get(file.content_type)
-    filename = filename[::-1].replace(ext[::-1], '', 1)[::-1]
-
     if file.content_type not in Config.ALLOWED_EXTENSIONS.keys():
-        return "None", filename, content_type, ext, "400 Invalid document type"
-
+        return "None", filename, content_type, "400 Invalid document type"
+    ext = Config.ALLOWED_EXTENSIONS.get(file.content_type)
     file_id, status = save_metadata_to_db(filename, content_type, ext, Config.DB_PATH)
-
     try:
-        # Сохраняем загруженный файл
         os.makedirs(Config.FILES_FOLDER, exist_ok=True)
-        file_path = os.path.join(Config.FILES_FOLDER, file.filename)
+        file_path = os.path.join(Config.FILES_FOLDER, file.filename+ext)
         with open(file_path, "wb") as f:
             f.write(await file.read())
-    except:
+    except Exception as _:
         status = "500 Internal Server Error"
-
     return file_id, filename, content_type, ext, status

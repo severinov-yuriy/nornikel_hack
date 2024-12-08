@@ -1,5 +1,6 @@
 import weaviate
 import os
+import sys
 
 weaviate_client = None
 
@@ -79,5 +80,9 @@ def get_weaviate_client() -> WeaviateClient:
     global weaviate_client
     if weaviate_client is None:
         weaviate_client = WeaviateClient(in_docker=True)
-        weaviate_client.set_classic_schema()
+        try:
+            weaviate_client.delete_classic_schema()
+            weaviate_client.set_classic_schema()
+        except Exception as e:
+            print(f"Warning setting up schema: {e}", file=sys.stderr)
     return weaviate_client

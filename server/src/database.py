@@ -21,7 +21,7 @@ def init_database(db_path: str) -> None:
     """)
 
     cursor.execute("""
-    CREATE TABLE IF NOT EXISTS text_chunks (    
+    CREATE TABLE IF NOT EXISTS text_chunks (
         chunk_id INTEGER PRIMARY KEY AUTOINCREMENT,
         chunk_text TEXT,
         file_id INTEGER
@@ -29,7 +29,7 @@ def init_database(db_path: str) -> None:
     """)
 
     cursor.execute("""
-    CREATE TABLE IF NOT EXISTS files_texts (    
+    CREATE TABLE IF NOT EXISTS files_texts (
         file_id INTEGER PRIMARY KEY,
         file_text TEXT
     )
@@ -170,7 +170,7 @@ def save_chunk(chunk: str, file_id: str, db_path: str):
     except Exception as e:
         raise Exception(e)
 
-    
+
 
 def save_chunks_to_db(chunks: List[Dict[str, str]], db_path: str = "data/chunks.db") -> None:
     """
@@ -208,4 +208,4 @@ def fetch_chunks_by_ids(ids: List[str], db_path: str = "data/chunks.db") -> List
 
     conn.close()
 
-    return [{"id": row[0], "name": row[1], 'ext': row[3], "chunk_text": row[3]} for row in rows]
+    return [{"id": row[0], "name": row[1], 'ext': row[2], "chunk_text": row[3]} for row in rows]
