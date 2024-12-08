@@ -33,10 +33,13 @@ async def process_file(file: UploadFile):
     if file.content_type not in Config.ALLOWED_EXTENSIONS.keys():
         return "None", filename, content_type, "400 Invalid document type"
     ext = Config.ALLOWED_EXTENSIONS.get(file.content_type)
+    print("Processing file: ", filename)
+    filename = filename.removesuffix(ext)
+    print("Processing file without suffix: ", filename)
     file_id, status = save_metadata_to_db(filename, content_type, ext, Config.DB_PATH)
     try:
         os.makedirs(Config.FILES_FOLDER, exist_ok=True)
-        file_path = os.path.join(Config.FILES_FOLDER, file.filename+ext)
+        file_path = os.path.join(Config.FILES_FOLDER, file.filename)
         with open(file_path, "wb") as f:
             f.write(await file.read())
     except Exception as _:
