@@ -75,18 +75,10 @@ class RAGPipeline:
         # Получение ответа от модели
         answer = api_client.generate(prompt, **kwargs)
 
-<<<<<<< HEAD
-        files = set(context_chunks)
-=======
         files = list(context_chunks)
->>>>>>> d464a611 (Fixes)
 
         return {
             "query": query,
             "answer": answer,
             "files": files
-<<<<<<< HEAD
-            }
-=======
         }
->>>>>>> d464a611 (Fixes)

@@ -42,6 +42,7 @@ def process_files(files: List[dict], config):
             )
             text = extract(filepath)
             text = preprocess_text(text)
+            print(text)
             save_text(file.get("file_id"), text, config.DB_PATH)
             chunks = split_into_chunks(text, config.CHUNK_SIZE, config.OVERLAP)
             for chunk in chunks:
