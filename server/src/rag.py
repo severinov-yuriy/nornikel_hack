@@ -42,7 +42,7 @@ class RAGPipeline:
         :param context_chunks: Список текстовых кусочков для контекста.
         :return: Готовый промт.
         """
-        context_texts = "\n\n".join([f"[{chunk['file_path']}]: {chunk['chunk_text']}" for chunk in context_chunks])
+        context_texts = "\n\n".join([f"[{chunk['name']}]: {chunk['chunk_text']}" for chunk in context_chunks])
         prompt = f"""
             Ты аналитик. Твоя задача — предоставить четкий, обоснованный и краткий анализ ситуации.
             Используй данные и логику для поддержки своих выводов. Избегай лишних деталей и философствования.
