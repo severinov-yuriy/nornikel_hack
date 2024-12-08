@@ -1,14 +1,13 @@
-
 export default defineEventHandler(async (event) => {
-    const body = await readBody(event)
+    const body = await readMultipartFormData(event)
     const contentType = event.headers.get('content-type') ?? ''
-  
+
     try {
         const response = await $fetch(`${process.env.API_URL}/upload/`, {
             method: 'post',
             body,
             headers: {
-                'Content-type': contentType 
+                'Content-type': contentType,
             },
         })
 
