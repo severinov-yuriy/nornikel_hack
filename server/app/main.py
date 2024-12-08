@@ -4,6 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from src.database import init_database
 import os
+import src.logger
 
 # Инициализация базы данных
 os.makedirs(Config.DATA_FOLDER, exist_ok=True)

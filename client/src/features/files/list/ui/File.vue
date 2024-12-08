@@ -31,7 +31,7 @@ const icons = {
                     <component :is="icons[file.ext]" />
                 </div>
                 <span class="inline-block w-full overflow-hidden text-ellipsis text-sm">{{
-                    `${file.name}.${file.ext}`
+                    `${file.name}${file.ext}`
                 }}</span>
             </div>
 

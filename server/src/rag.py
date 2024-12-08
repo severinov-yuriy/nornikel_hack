@@ -28,9 +28,9 @@ class RAGPipeline:
             .do()
         )
         # Извлечение метаданных из базы данных
-        print(f"{response=}")
+        # print(f"{response=}")
         chunk_ids = [x["chunk_id"] for x in response["data"]["Get"]["Document"]]  # Используем пользовательские идентификаторы
-        print(chunk_ids)
+        # print(chunk_ids)
         context_chunks = fetch_chunks_by_ids(chunk_ids, self.db_path)
 
         return context_chunks
