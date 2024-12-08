@@ -1,9 +1,9 @@
-import os
+from app.routes import upload, query, files
+from config import Config
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.routes import upload, query, files
 from src.database import init_database
-from config import Config
+import os
 
 # Инициализация базы данных
 os.makedirs(Config.DATA_FOLDER, exist_ok=True)

@@ -22,12 +22,13 @@ class RAGPipeline:
         :return: Список текстовых кусочков с метаданными.
         """
         response = (
-            get_weaviate_client().client.query.get("Document", ["title", "content"])
+            get_weaviate_client().client.query.get("Document", ["title", "chunk_id", "content"])
             .with_limit(top_k)
             .with_near_text({"concepts": [query]})
             .do()
         )
         # Извлечение метаданных из базы данных
+        print(f"{response=}")
         chunk_ids = [x["chunk_id"] for x in response["data"]["Get"]["Document"]]  # Используем пользовательские идентификаторы
         print(chunk_ids)
         context_chunks = fetch_chunks_by_ids(chunk_ids, self.db_path)
@@ -42,7 +43,7 @@ class RAGPipeline:
         :param context_chunks: Список текстовых кусочков для контекста.
         :return: Готовый промт.
         """
-        context_texts = "\n\n".join([f"[{chunk['name']}]: {chunk['chunk_text']}" for chunk in context_chunks])
+        context_texts = "\n\n".join([f"[{chunk['name']+chunk['ext']}]: {chunk['chunk_text']}" for chunk in context_chunks])
         prompt = f"""
             Ты аналитик. Твоя задача — предоставить четкий, обоснованный и краткий анализ ситуации.
             Используй данные и логику для поддержки своих выводов. Избегай лишних деталей и философствования.
@@ -67,16 +68,25 @@ class RAGPipeline:
         """
         # Извлечение контекста
         context_chunks = self.retrieve_context(query, top_k)
+        print(f"{context_chunks=}")
         # Формирование промта
         prompt = self.generate_prompt(query, context_chunks)
 
         # Получение ответа от модели
         answer = api_client.generate(prompt, **kwargs)
 
+<<<<<<< HEAD
         files = set(context_chunks)
+=======
+        files = list(context_chunks)
+>>>>>>> d464a611 (Fixes)
 
         return {
             "query": query,
             "answer": answer,
             "files": files
+<<<<<<< HEAD
             }
+=======
+        }
+>>>>>>> d464a611 (Fixes)
