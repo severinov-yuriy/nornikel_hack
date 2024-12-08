@@ -357,6 +357,8 @@ pygments==2.18.0
     # via
     #   server (pyproject.toml)
     #   rich
+pypdf2==3.0.1
+    # via server (pyproject.toml)
 pypdfium2==4.30.0
     # via
     #   server (pyproject.toml)

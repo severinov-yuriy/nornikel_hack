@@ -185,8 +185,8 @@ def fetch_chunks_by_ids(ids: List[str], db_path: str = "data/chunks.db") -> List
     query = f"SELECT tc.chunk_id, f.filename, f.ext, tc.chunk_text FROM text_chunks tc LEFT JOIN files f ON tc.file_id==f.file_id WHERE tc.chunk_id IN ({','.join(['?'] * len(ids))})"
     cursor.execute(query, ids)
     rows = cursor.fetchall()
-    
-    print(rows)
+
+    # print(rows)
 
     conn.close()
 

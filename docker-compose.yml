@@ -26,6 +26,7 @@ services:
       - weaviate
     environment:
       - WEAVIATE_URL=http://weaviate:8080
+      - DOCLING_SERVER=http://marker-api-cpu:8082
     restart: "on-failure:10"
     volumes:
       - ./server:/app
@@ -65,3 +66,4 @@ volumes:
 networks:
   app_network:
     driver: bridge
+    external: true
