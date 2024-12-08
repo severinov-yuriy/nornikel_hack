@@ -29,3 +29,4 @@ search_data
 **/__pycache__
 **/.venv
 **/.pytest_cache
+server/data

@@ -39,7 +39,7 @@ const icons = {
                 <div class="flex flex-col px-1 py-2 dark:bg-slate-700">
                     <UButton
                         label="Скачать"
-                        size="xs"
+                        size="sm"
                         variant="link"
                         icon="i-heroicons-arrow-down-tray"
                         @click="downloadFile(file)"
@@ -52,6 +52,7 @@ const icons = {
                         color="red"
                         @click="deleteFile(file.id)"
                         :loading="isDeleting"
+                   icon="i-heroicons-trash"
                     />
                 </div>
             </template>
