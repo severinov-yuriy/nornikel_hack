@@ -8,8 +8,8 @@ from src.text import (
     split_into_chunks,
 )
 
-# from src.audio import process_audio
-# from src.image import process_image
+from src.audio import process_audio
+from src.image import process_image
 from src.database import save_text, save_chunk
 from src.weaviate_database import get_weaviate_client
 
@@ -18,9 +18,9 @@ EXTRACTORS = {
     "application/msword": process_doc,
     "application/vnd.openxmlformats-officedocument.wordprocessingml.document": process_doc,
     "application/pdf": process_pdf,
-    # "audio/mpeg": process_audio,
-    # "image/jpeg": process_image,
-    # "image/png": process_image,
+    "audio/mpeg": process_audio,
+    "image/jpeg": process_image,
+    "image/png": process_image,
 }
 
 

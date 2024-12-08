@@ -171,26 +171,6 @@ def save_chunk(chunk: str, file_id: str, db_path: str):
         raise Exception(e)
 
 
-
-def save_chunks_to_db(chunks: List[Dict[str, str]], db_path: str = "data/chunks.db") -> None:
-    """
-    Сохранение кусочков текста в базу данных.
-
-    :param chunks: Список словарей с кусочками текста.
-    :param db_path: Путь к файлу базы данных.
-    """
-    conn = sqlite3.connect(db_path)
-    cursor = conn.cursor()
-
-    for chunk in chunks:
-        cursor.execute("""
-        INSERT OR IGNORE INTO text_chunks (id, file_path, chunk_text)
-        VALUES (?, ?, ?)
-        """, (chunk["id"], chunk["file_path"], chunk["chunk_text"]))
-
-    conn.commit()
-    conn.close()
-
 def fetch_chunks_by_ids(ids: List[str], db_path: str = "data/chunks.db") -> List[Dict[str, str]]:
     """
     Извлечение кусочков текста по их идентификаторам.
@@ -205,6 +185,8 @@ def fetch_chunks_by_ids(ids: List[str], db_path: str = "data/chunks.db") -> List
     query = f"SELECT tc.chunk_id, f.filename, f.ext, tc.chunk_text FROM text_chunks tc LEFT JOIN files f ON tc.file_id==f.file_id WHERE tc.chunk_id IN ({','.join(['?'] * len(ids))})"
     cursor.execute(query, ids)
     rows = cursor.fetchall()
+    
+    print(rows)
 
     conn.close()
 
